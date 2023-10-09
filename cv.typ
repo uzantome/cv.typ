@@ -128,22 +128,33 @@
         #for edu in info.education {
             // Parse ISO date strings into datetime objects
             let start = utils.strpdate(edu.startDate)
+            let startDateFmt = [#utils.monthname(start.month()) #start.year()]
+            // TODO: better handling of "present" dates (also regarding yaml entries)
             let end = utils.strpdate(edu.endDate)
+            let endDateFmt = {
+                if edu.untilPresent {
+                    [Present]
+                } else {
+                    [#utils.monthname(end.month()) #end.year()]
+                }
+            }
 
             // Create a block layout for each education entry
             block(width: 100%)[
                 // Line 1: Institution and Location
                 *#link(edu.url)[#edu.institution]* #h(1fr) *#edu.location* \
                 // Line 2: Degree and Date Range
-                #text(style: "italic")[#edu.studyType in #edu.area] #h(1fr)
-                #start.display("[month repr:short]") #start.year() #sym.dash.en #end.display("[month repr:short]") #end.year() \
+                #text(style: "italic")[#edu.studyType #if edu.area != none [in #edu.area]] #h(1fr)
+                #startDateFmt #sym.dash.en #endDateFmt \
                 // Bullet points
-                - *Honors*: #edu.honors.join(", ")
-                - *Courses*: #edu.courses.join(", ")
+                #if edu.honors != none [- *Honors*: #edu.honors.join(", ")]
+                #if edu.courses != none [- *Courses*: #edu.courses.join(", ")]
                 // Highlights or Description
-                #for hi in edu.highlights [
-                    - #eval("[" + hi + "]")
-                ]
+                #if edu.highlights != none {
+                    for hi in edu.highlights [
+                        - #eval("[" + hi + "]")
+                    ]
+                }
             ]
         }
     ]
