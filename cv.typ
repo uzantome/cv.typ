@@ -60,6 +60,16 @@
     doc
 }
 
+// date of birth
+#let dob(info, uservars) = {
+    if uservars.showDateOfBirth {
+        block(width: 100%)[
+            Date of birth: #info.personal.dateofbirth
+            #v(-4pt)
+        ]
+    } else {none}
+}
+
 // address
 #let addresstext(info, uservars) = {
     if uservars.showAddress {
@@ -79,7 +89,7 @@
         }
     ).filter(it => it != none) // filter out none elements from the profile array
 
-    #if info.personal.profiles.len() > 0 {
+    #if info.personal.profiles != none {
         for profile in info.personal.profiles {
             profiles.push(
                 box(link(profile.url)[#profile.url.split("//").at(1)])
@@ -96,8 +106,9 @@
 #let cvheading(info, uservars) = {
     align(center)[
         = #info.personal.name
-        #addresstext(info, uservars)
         #contacttext(info, uservars)
+        #addresstext(info, uservars)
+        #dob(info, uservars)
     ]
 }
 
@@ -127,7 +138,7 @@
                     *#edu.institution* #h(1fr) *#edu.location* \
                 ]
                 // line 2: degree and date
-                #text(style: "italic")[#edu.studyType in #edu.area] #h(1fr)
+                #text(style: "italic")[#edu.studyType #if edu.area != none {[in #edu.area]}] #h(1fr)
                 #start #sym.dash.en #end \
                 #eval(edu-items, mode: "markup")
             ]
@@ -154,9 +165,11 @@
                 #text(style: "italic")[#w.position] #h(1fr)
                 #start #sym.dash.en #end \
                 // highlights or description
-                #for hi in w.highlights [
-                    - #eval(hi, mode: "markup")
-                ]
+                #if w.highlights != none {
+                    for hi in w.highlights [
+                        - #eval(hi, mode: "markup")
+                        ]
+                }
             ]
         }
     ]}
@@ -164,7 +177,7 @@
 
 #let cvaffiliations(info, isbreakable: true) = {
     if info.affiliations != none {block[
-        == Leadership & Activities
+        == Activities & volunteer work
         #for org in info.affiliations {
             // parse ISO date strings into datetime objects
             let start = utils.strpdate(org.startDate)
@@ -194,7 +207,7 @@
 
 #let cvprojects(info, isbreakable: true) = {
     if info.projects != none {block[
-        == Projects
+        == Scholarships
         #for project in info.projects {
             // parse ISO date strings into datetime objects
             let start = utils.strpdate(project.startDate)
@@ -210,9 +223,11 @@
                 // line 2: organization and date
                 #text(style: "italic")[#project.affiliation]  #h(1fr) #start #sym.dash.en #end \
                 // summary or description
-                #for hi in project.highlights [
-                    - #eval(hi, mode: "markup")
-                ]
+                #if project.highlights != none {
+                    for hi in project.highlights [
+                        - #eval(hi, mode: "markup")
+                    ]
+                }
             ]
         }
     ]}
@@ -247,7 +262,7 @@
 
 #let cvcertificates(info, isbreakable: true) = {
     if info.certificates != none {block[
-        == Licenses & Certifications
+        == Summer schools & language courses
 
         #for cert in info.certificates {
             // parse ISO date strings into datetime objects
@@ -261,7 +276,7 @@
                     *#cert.name* \
                 ]
                 // line 2: issuer and date
-                Issued by #text(style: "italic")[#cert.issuer]  #h(1fr) #date \
+                #text(style: "italic")[#cert.issuer]  #h(1fr) #date \
             ]
         }
     ]}
