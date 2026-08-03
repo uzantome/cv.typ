@@ -1,6 +1,6 @@
 [package]
 name = "imprecv"
-version = "1.0.0"
+version = "1.0.1"
 compiler = "0.11.0"
 entrypoint = "cv.typ"
 authors = ["Je Sian Keith Herman <https://jskherman.com>"]
