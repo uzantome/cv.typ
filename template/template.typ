@@ -1,4 +1,5 @@
 #import "@preview/imprecv:1.0.1": *
+//#import "../cv.typ"
 
 #let cvdata = yaml("template.yml")
 
@@ -54,6 +55,7 @@
 #cvheading(cvdata, uservars)
 #cvwork(cvdata)
 #cveducation(cvdata)
+#cvscholarships(cvdata)
 #cvaffiliations(cvdata)
 #cvprojects(cvdata)
 #cvawards(cvdata)

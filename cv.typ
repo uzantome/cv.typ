@@ -190,7 +190,7 @@
     ]}
 }
 
-#let cvaffiliations(info, title: "Leadership and Activities", isbreakable: true) = {
+#let cvaffiliations(info, title: "Volunteering", isbreakable: true) = {
     if ("affiliations" in info) and (info.affiliations != none) {block[
         == #title
         #for org in info.affiliations {
@@ -241,6 +241,43 @@
                 #for hi in project.highlights [
                     - #eval(hi, mode: "markup")
                 ]
+            ]
+        }
+    ]}
+}
+
+#let cvscholarships(info, title: "Scholarships", isbreakable: true) = {
+    if ("scholarships" in info) and (info.scholarships != none) {block[
+        == #title
+        #for sch in info.scholarships {
+            // Parse ISO date strings into datetime objects
+            let start = utils.strpdate(sch.startDate)
+            let end = if ("endDate" in sch) and (sch.endDate != none) {
+                utils.strpdate(sch.endDate)
+            } else { none }
+            // Create a block layout for each scholarship entry
+            block(width: 100%, breakable: isbreakable)[
+                // Line 1: Scholarship Name and Location
+                #if ("url" in sch) and (sch.url != none) [
+                    *#link(sch.url)[#sch.name]* #h(1fr)
+                ] else [
+                    *#sch.name* #h(1fr)
+                ]
+                #if ("location" in sch) and (sch.location != none) [
+                    *#sch.location*
+                ]
+                \
+                // Line 2: Funder or Description and Date
+                #if ("funder" in sch) and (sch.funder != none) [
+                    #text(style: "italic")[#sch.funder]
+                ]
+                #h(1fr) #utils.daterange(start, end) \
+                // Summary or Description
+                #if ("highlights" in sch) and (sch.highlights != none) {
+                    for hi in sch.highlights [
+                        - #eval(hi, mode: "markup")
+                    ]
+                } else {}
             ]
         }
     ]}

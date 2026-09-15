@@ -95,6 +95,17 @@ affiliations:
       - Promising Toastmaster of the Year (PY 2022-2023)
       - Tell me, pray, what explanation do you put upon their actions?
 
+scholarships:
+  - name: Example Merit Scholarship
+    funder: Example Scholarship Foundation
+    url:
+    location: London, United Kingdom
+    startDate: 2019-09-01
+    endDate: "present"
+    highlights:
+      - Awarded to the top 1% of applicants on the basis of academic merit.
+      - Provides a monthly stipend and access to seminars, summer academies, and mentoring across the full course of study.
+
 awards:
   - title: Champion in the Division A District X Speech Evaluation Contest
     date: 2023-05-09

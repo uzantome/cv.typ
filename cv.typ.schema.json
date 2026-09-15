@@ -292,6 +292,54 @@
         }
       }
     },
+    "scholarships": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "default": [],
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "startDate"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "funder": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "url": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uri"
+          },
+          "startDate": {
+            "type": ["string", "null"],
+            "format": "date"
+          },
+          "endDate": {
+            "type": ["string", "null"]
+          },
+          "highlights": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
     "awards": {
       "type": [
         "array",
